@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import time
 import seaborn as sns
 from matplotlib import pyplot as plt
 
@@ -58,7 +59,7 @@ class Normal_generator():
                 u1 = 1 - random.uniform(0, 1)
                 cand = -np.log(u1)
                 y = np.exp(-cand) * random.uniform(0, 1)
-                if 1 / (np.sqrt(2 * np.pi)) * np.exp(-1 * cand ** 2 / 2) > y:
+                if 1 / (np.sqrt(np.pi/2)) * np.exp(-1 * cand ** 2 / 2) > y:
                     x[i] = cand
                     if random.uniform(0, 1) < 0.5:
                         x[i] = -x[i]
@@ -83,26 +84,35 @@ class Normal_generator():
 
 
 if __name__ == '__main__':
-    a = Normal_generator(10000, 0, 1)
+    a = Normal_generator(1000000, 0, 1)
+    time_start1 = time.time()
     x1 = a.generate(1)
+    time_end1 = time.time()
+    print('method1 cost = %fs' % (time_end1 - time_start1))
+    time_start2 = time.time()
     x2 = a.generate(3)
+    time_end2 = time.time()
+    print('method2 cost = %fs' % (time_end2 - time_start2))
+    time_start3 = time.time()
     x3 = a.generate(4)
-    fig, axs = plt.subplots(3, 1)
-    plt.suptitle("Normal random numbers")
-    u1=sns.histplot(x1, kde=True, ax=axs[0])
-    u1.set_title("method 1")
-    u1.set_xlabel("X")
-    u1.set_ylabel("counts/density")
-    u1.legend(labels=['density','hist'],loc=1,prop={'size':6})
-    u2=sns.histplot(x2, kde=True, ax=axs[1])
-    u2.set_title("method 2")
-    u2.set_xlabel("X")
-    u2.set_ylabel("counts/density")
-    u2.legend(labels=['density','hist'],loc=1,prop={'size':6})
-    u3=sns.histplot(x3, kde=True, ax=axs[2])
-    u3.set_title("method 3")
-    u3.set_xlabel("X")
-    u3.set_ylabel("counts/density")
-    u3.legend(labels=['density','hist'],loc=1,prop={'size':6})
-    plt.tight_layout()
-    plt.show()
+    time_end3 = time.time()
+    print('method3 cost = %fs' % (time_end3 - time_start3))
+    # fig, axs = plt.subplots(3, 1)
+    # plt.suptitle("Normal random numbers")
+    # u1=sns.histplot(x1, kde=True, ax=axs[0])
+    # u1.set_title("method 1")
+    # u1.set_xlabel("X")
+    # u1.set_ylabel("counts/density")
+    # u1.legend(labels=['density','hist'],loc=1,prop={'size':6})
+    # u2=sns.histplot(x2, kde=True, ax=axs[1])
+    # u2.set_title("method 2")
+    # u2.set_xlabel("X")
+    # u2.set_ylabel("counts/density")
+    # u2.legend(labels=['density','hist'],loc=1,prop={'size':6})
+    # u3=sns.histplot(x3, kde=True, ax=axs[2])
+    # u3.set_title("method 3")
+    # u3.set_xlabel("X")
+    # u3.set_ylabel("counts/density")
+    # u3.legend(labels=['density','hist'],loc=1,prop={'size':6})
+    # plt.tight_layout()
+    # plt.show()
